@@ -15,3 +15,4 @@ connectDB().then(() => {
 }).catch((err) => {
   console.error('Error crítico al iniciar la base de datos:', err);
 });
+

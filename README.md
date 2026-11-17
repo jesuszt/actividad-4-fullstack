@@ -235,3 +235,4 @@ En concordancia con los incisos **f.2** y **f.3** de la actividad:
    - Se ajustó el mockeo de las cadenas de métodos encadenados de Mongoose (`populate()`, `sort()`, `select()`).
    - Se incorporaron aserciones estrictas para la captura de errores 400 por validaciones de negocio (precios negativos, contraseñas cortas).
    - Se implementó aislamiento en las pruebas para que puedan ejecutarse en entornos de integración continua sin requerir un cluster de base de datos en ejecución física.
+

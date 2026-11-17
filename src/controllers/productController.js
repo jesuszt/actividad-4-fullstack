@@ -173,3 +173,4 @@ module.exports = {
   updateProduct,
   deleteProduct,
 };
+

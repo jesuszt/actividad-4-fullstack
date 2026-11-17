@@ -113,3 +113,4 @@ Los requerimientos no funcionales definen los atributos de calidad, restriccione
 | Productos | POST | `/api/products` | Crear un nuevo producto | Sí |
 | Productos | PUT | `/api/products/:id` | Actualizar un producto existente | Sí |
 | Productos | DELETE | `/api/products/:id` | Eliminar un producto | Sí |
+

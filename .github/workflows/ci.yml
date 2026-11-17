@@ -1,4 +1,4 @@
-name: Node.js CI & Automated Testing
+name: CI/CD Pipeline - Test & Automated Deployment
 
 on:
   push:
@@ -7,8 +7,11 @@ on:
     branches: [ main, master ]
 
 jobs:
+  # =========================================================================
+  # FASE 1: INTEGRACIÓN CONTINUA (CI) - Ejecución de Pruebas Automatizadas
+  # =========================================================================
   test:
-    name: Run Unit & Integration Tests
+    name: Run Tests (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
 
     strategy:
@@ -16,20 +19,59 @@ jobs:
         node-version: [18.x, 20.x, 22.x]
 
     steps:
-      - name: Checkout repository
+      - name: Checkout del código fuente
         uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Configurar Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Instalar dependencias limpias
         run: npm ci
 
-      - name: Run unit & integration tests with Jest
+      - name: Ejecutar pruebas unitarias con Jest
         run: npm test
         env:
           NODE_ENV: test
           JWT_SECRET: github_actions_ci_secret_test_key_12345
+
+  # =========================================================================
+  # FASE 2: DESPLIEGUE CONTINUO (CD) - Despliegue Automático en Vercel SaaS
+  # =========================================================================
+  deploy:
+    name: Deploy to Vercel (Production)
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Instalar Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Extraer información del entorno de Vercel
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Compilar artefactos del proyecto
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Desplegar en Producción
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

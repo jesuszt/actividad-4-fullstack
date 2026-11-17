@@ -8,7 +8,8 @@
     "dev": "nodemon src/server.js",
     "test": "jest --runInBand --detectOpenHandles --forceExit",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage --runInBand --forceExit"
+    "test:coverage": "jest --coverage --runInBand --forceExit",
+    "test:db": "node scripts/test-mongodb-connection.js"
   },
   "keywords": [
     "nodejs",
@@ -36,3 +37,4 @@
     "supertest": "^7.0.0"
   }
 }
+
