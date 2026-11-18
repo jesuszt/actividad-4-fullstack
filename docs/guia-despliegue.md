@@ -126,3 +126,4 @@ Para habilitar el despliegue automático en GitHub Actions, configura las creden
 3. Cada vez que hagas un `git push` a la rama `main` o `master`:
    - Se ejecutarán las 27 pruebas unitarias automatizadas con Jest.
    - Si ninguna prueba falla, GitHub Actions compilará y desplegará la última versión automáticamente en Vercel.
+
