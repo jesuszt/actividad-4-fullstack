@@ -69,7 +69,8 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         window.location.href = '/dashboard.html';
       }, 700);
     } else {
-      showAlert(data.message || 'Error al iniciar sesión', 'danger');
+      const msg = data.error ? `${data.message}: ${data.error}` : (data.message || 'Error al iniciar sesión');
+      showAlert(msg, 'danger');
     }
   } catch (error) {
     showAlert('Error de conexión con el servidor. Intente nuevamente.', 'danger');
@@ -111,7 +112,8 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
         window.location.href = '/dashboard.html';
       }, 700);
     } else {
-      showAlert(data.message || 'Error al registrarse', 'danger');
+      const msg = data.error ? `${data.message}: ${data.error}` : (data.message || 'Error al registrarse');
+      showAlert(msg, 'danger');
     }
   } catch (error) {
     showAlert('Error de conexión con el servidor. Intente nuevamente.', 'danger');
